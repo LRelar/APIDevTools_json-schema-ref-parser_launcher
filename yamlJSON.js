@@ -22,6 +22,8 @@
 
 const process = require('process');
 const $RefParser = require("@apidevtools/json-schema-ref-parser");
+const path = require('path');
+
 let parser = new $RefParser();
 fs = require('fs');
 
@@ -39,12 +41,14 @@ function writeToFile(data, name) {
 
 async function main() {
 	let target = process.argv.pop();
-	const data = await loadAndParse(target);
-	const regex = /(^[a-zA-Z\u0400-\u04FF0-9\-/+_,.( )]{1,120})\.(?=(json|yaml|yml)$)[^.]+$/g; 
-	let dst = regex.exec(target);
+	let myPath = path.resolve(target);
+	const data = await loadAndParse(myPath);
+	const regex = /(^.{1,120})\.(?=(json|yaml|yml)$)[^.]+$/g;
+	let dst = regex.exec(myPath);
 
 	if (!dst) return console.log("Invalid API file given");
 	writeToFile(data, dst[1] + '.json');
 }
 
 main();
+

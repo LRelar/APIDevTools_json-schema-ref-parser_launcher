@@ -32,23 +32,51 @@ async function loadAndParse(target) {
 	return JSON.stringify(data)
 }
 
-function writeToFile(data, name) {
-	fs.writeFile(name, data, function(err) {
+function writeToFile(data, target) {
+	fs.writeFile(target, data, function(err) {
 		if (err) return console.log(err);
 		console.log('OK');
 	})
 }
 
-async function main() {
-	let target = process.argv.pop();
-	let myPath = path.resolve(target);
-	const data = await loadAndParse(myPath);
-	const regex = /(^.{1,120})\.(?=(json|yaml|yml)$)[^.]+$/g;
-	let dst = regex.exec(myPath);
+function fillPathObj(target, name) {
+	target.name = name;
+	target.ext = '.json';
+	target.base = name + '.json';
+}
 
+function checkTargetArgv() {
+	let dst;
+	let dstPath;
+
+	if (process.argv.length == 4) {
+		dstPath = path.resolve(process.argv.pop());
+		dst = path.parse(dstPath)
+		if (fs.existsSync(dstPath) && fs.lstatSync(dstPath).isDirectory()) {
+			dst.dir = dstPath;
+			fillPathObj(dst, 'api_agregated');
+		};
+		if (!dst.ext) fillPathObj(dst, dst.name);
+	}
+	return dst;
+}
+
+async function main() {
+	let src;
+	let dst;
+	let srcPath;
+	let dstPath;
+
+	dst = checkTargetArgv();
+	srcPath = path.resolve(process.argv.pop());
+	src = path.parse(srcPath);
+	if (!dst) {
+		dst = src;
+		fillPathObj(dst, 'api_agregated');
+	}
+	const data = await loadAndParse(srcPath);
 	if (!dst) return console.log("Invalid API file given");
-	writeToFile(data, dst[1] + '.json');
+	writeToFile(data, path.format(dst));
 }
 
 main();
-

@@ -1,0 +1,14 @@
+{
+  "name": "i_hate_js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "yamlJSON.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@apidevtools/json-schema-ref-parser": "^9.0.7"
+  }
+}

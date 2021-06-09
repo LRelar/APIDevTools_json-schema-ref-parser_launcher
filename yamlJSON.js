@@ -33,7 +33,9 @@ async function loadAndParse(target) {
 }
 
 function writeToFile(data, target) {
-	fs.writeFile(target, data, function(err) {
+	const jsonObj = JSON.parse(data);
+
+	fs.writeFile(target, JSON.stringify(jsonObj, null, '\t'), function(err) {
 		if (err) return console.log(err);
 		console.log('OK');
 	})
@@ -55,7 +57,7 @@ function checkTargetArgv() {
 		if (fs.existsSync(dstPath) && fs.lstatSync(dstPath).isDirectory()) {
 			dst.dir = dstPath;
 			fillPathObj(dst, 'api_agregated');
-		};
+		}
 		if (!dst.ext) fillPathObj(dst, dst.name);
 	}
 	return dst;

@@ -6,7 +6,7 @@
 /*   By: mschimme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/08 00:02:37 by mschimme          #+#    #+#             */
-/*   Updated: 2021/06/08 14:21:52 by mschimme         ###   ########.fr       */
+/*   Updated: 2021/06/10 09:18:27 by mschimme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ async function main() {
 	let src;
 	let dst;
 	let srcPath;
-	let dstPath;
 
 	dst = checkTargetArgv();
 	srcPath = path.resolve(process.argv.pop());
